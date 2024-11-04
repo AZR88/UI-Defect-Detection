@@ -2,9 +2,6 @@ plugins {
     id 'java'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
-
 repositories {
     mavenCentral()
 }
@@ -24,6 +21,8 @@ dependencies {
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.0'
 
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.17.0'
+
+
 }
 
 test {
@@ -37,4 +36,25 @@ configurations {
     cucumberRuntime {
         extendsFrom testImplementation
     }
+}
+
+def tags = (findProperty('tags') == null) ? 'not @exclude' : "${findProperty('tags')} and not @exclude"
+
+
+task cucumber(type: JavaExec) {
+    description = "Running Cucumber Test"
+    group = "verification" // optional, for better task grouping
+
+    dependsOn assemble, compileTestJava
+    main = "io.cucumber.core.cli.Main"
+
+    classpath = sourceSets.test.runtimeClasspath + sourceSets.main.output
+
+    args = [
+            '--plugin', 'html:reports/test-report.html',
+            '--plugin', 'pretty',
+            '--glue', 'stepDef',          // adjust this based on your step definitions package
+            '--tags', "${tags}",           // pass the tags dynamically
+            'src/test/resources/features'  // location of your feature files
+    ]
 }
