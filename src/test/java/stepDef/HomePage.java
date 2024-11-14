@@ -1,39 +1,52 @@
 package stepDef;
 
-import io.cucumber.java.en.And;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.Dimension;
+
+import java.util.List;
+import java.util.Map;
 
 import static Helper.WebHelper.driver;
 import static org.junit.Assert.assertTrue;
 
 public class HomePage {
+
+
+
+    @When("check multiple titles and ids")
+    public void checkMultipleTitlesAndIds(DataTable dataTable) {
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+
+        for (Map<String, String> row : data) {
+            String productId = row.get("id");
+            String expectedTitle = row.get("title");
+            String expectedPrice = row.get("price");
+
+            try {
+                Thread.sleep(5000); // 5 detik delay
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            boolean isTitleAndPriceCorrect = page.HomePage.isTitleAndPriceTextEqual(driver, productId, expectedTitle, expectedPrice);
+
+
+            System.out.println("ID Produk: " + productId);
+            System.out.println("Expected Title: " + expectedTitle);
+            System.out.println("Expected Price: " + expectedPrice);
+            System.out.println("Actual Title and Price: " + (isTitleAndPriceCorrect ? "Sesuai" : "Tidak Sesuai"));
+
+            assertTrue("Title atau Price tidak sesuai untuk produk dengan ID " + productId, isTitleAndPriceCorrect);
+        }
+    }
+
+
+
+
+
     @Given("user is on homepage")
     public void userIsOnHomepage() {
         driver.get("https://www.demoblaze.com/");
-    }
-
-
-    @When("Check picture Size")
-    public void checkPictureSize() {
-        Dimension imageSize = page.HomePage.getProductImageSize(driver);
-        int width = imageSize.getWidth();
-        int height = imageSize.getHeight();
-
-        System.out.println("Lebar gambar produk: " + width + "px");
-        System.out.println("Tinggi gambar produk: " + height + "px");
-    }
-
-
-    @And("check title is equals to {string}")
-    public void checkTitleIsEqualsTo(String expectedTitle) {
-        boolean isTitleCorrect = page.HomePage.isTitleTextEqual(driver, expectedTitle);
-        assertTrue("Title tidak sesuai dengan yang diharapkan!", isTitleCorrect);
-    }
-
-    @And("check product prize is {string}")
-    public void checkProductPrizeIs(String expectedTitle) { boolean isTitleCorrect = page.HomePage.isPriceTextEqual(driver, expectedTitle);
-        assertTrue("Title tidak sesuai dengan yang diharapkan!", isTitleCorrect);
     }
 }
