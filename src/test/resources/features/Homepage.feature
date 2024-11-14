@@ -1,7 +1,9 @@
-Feature: Ui Detect
-  Scenario: sample test
+Feature: Validate multiple product titles by ID
 
-    Given  user is on homepage
-    When Check picture Size
-    And check title is equals to "Samsung salaxy ss"
-    And check product prize is "$360"
+  Scenario: Validate multiple product titles
+    Given user is on homepage
+    When check multiple titles and ids
+      | id  | title             | price |
+      | 1   | Samsung galaxy s6 | $360   |
+      | 2   | Nokia lumia 1520  | $820   |
+      | 3   | Nexus 6           | $650   |
