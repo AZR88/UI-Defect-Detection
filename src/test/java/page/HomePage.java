@@ -8,17 +8,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
+import static org.junit.Assert.assertTrue;
+
 public class HomePage {
 
-    public static By productImage = By.cssSelector("img.card-img-top.img-fluid");
-    public static By productPrice = By.xpath("//div[@class='card-block']/h5");
-    public static By productDescription = By.xpath("//p[@id='article']");
+    private static By productImage = By.cssSelector("img.card-img-top.img-fluid");
+    private static By nextbutton = By.id("next2");
 
     public static By getProductTitleLocatorById(String productId, String expectedTitle) {
-        return By.xpath("//a[@href='prod.html?idp_=" + productId + "' and text()='" + expectedTitle + "']");
+        return By.xpath("//a[contains(@href, 'prod.html?idp_=" + productId + "') and contains(text(), '" + expectedTitle + "')]");
     }
-    public static By getProductPriceLocator(String expectedPrice) {
-        return By.xpath("//h5[text()='" + expectedPrice + "']");
+    private static By getProductPriceLocator(String expectedPrice, String expectedTitle) {
+        return By.xpath("//h4[contains(@class, 'card-title')]/a[text()='"+ expectedTitle+"']/ancestor::div[contains(@class, 'card-block')]/h5[contains(text(), '"+ expectedPrice+"')]");
     }
 
     public static Dimension getElementSize(WebDriver driver, By locator) {
@@ -31,7 +32,7 @@ public class HomePage {
     public static boolean isTitleAndPriceTextEqual(WebDriver driver, String productId, String expectedTitle, String expectedPrice) {
 
         By productTitleLocator = getProductTitleLocatorById(productId, expectedTitle);
-        By productPriceLocator = getProductPriceLocator(expectedPrice);
+        By productPriceLocator = getProductPriceLocator(expectedPrice, expectedTitle);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(productTitleLocator));
@@ -45,22 +46,24 @@ public class HomePage {
         return actualTitle.equals(expectedTitle) && actualPrice.equals(expectedPrice);
     }
 
+    public static void ClickNext(WebDriver driver, String nextProduct, String nextProductPrice) {
+        driver.findElement(nextbutton).click();
 
 
+        String expectedTitle = nextProduct;
+        String expectedPrice = nextProductPrice;
 
-    public static boolean isPriceTextEqual(WebDriver driver, String expectedText) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(productPrice));
-        String actualText = titleElement.getText();
-        return actualText.equals(expectedText);
+
+        By productTitleLocator = getProductPriceLocator(expectedPrice, expectedTitle);
+
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement productTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(productTitleLocator));
+
+
+        assertTrue(productTitleElement.getText().equals(expectedTitle));
     }
 
-    public static boolean isDescTextEqual(WebDriver driver, String expectedText) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(productDescription));
-        String actualText = titleElement.getText();
-        return actualText.equals(expectedText);
-    }
 
     public static Dimension getProductImageSize(WebDriver driver) {
         return getElementSize(driver, productImage);
