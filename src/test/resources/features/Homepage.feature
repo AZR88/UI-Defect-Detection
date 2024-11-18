@@ -3,7 +3,7 @@ Feature: Validate multiple product titles by ID
   Scenario: Validate multiple product titles
     Given user is on homepage
     When check multiple titles and ids
-      | id  | title               | price   |
+      | id  | title               | price    |
       | 1   | Samsung galaxy s6   | $360     |
       | 2   | Nokia lumia 1520    | $820     |
       | 3   | Nexus 6             | $650     |
@@ -14,5 +14,13 @@ Feature: Validate multiple product titles by ID
       | 8   | Sony vaio i5        | $790     |
       | 9   | Sony vaio i7        | $790     |
 
-    Then click next to show next product where title = "Apple monitor 24" and price = "400"
+    Then click next to show next product where id = "10" and title = "Apple monitor 24"
+    Then check multiple titles and ids on next page
+      | id  | title               | price   |
+      | 10  | Apple monitor 24    | $400    |
+      | 11  | MacBook air         | $700    |
+      | 12  | Dell i7 8gb         | $700    |
+      | 13  | 2017 Dell 15.6 Inch | $700    |
+      | 14  | ASUS Full HD        | $230    |
+      | 15  | MacBook Pro         | $1100   |
 
