@@ -1,11 +1,9 @@
 package page;
 
-import io.cucumber.messages.types.Product;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
@@ -16,6 +14,8 @@ public class HomePage {
 
     private static By nextbutton = By.id("next2");
     private  static By PhoneCat = By.xpath("//a[@onclick=\"byCat('phone')\"]");
+    private  static By LaptopCat = By.xpath("//a[@onclick=\"byCat('notebook')\"]");
+    private  static By MonitorCat = By.xpath("//a[@onclick=\"byCat('monitor')\"]");
 
 
     public static By getProductTitleLocatorById(String productId, String expectedTitle) {
@@ -26,10 +26,11 @@ public class HomePage {
     }
 
 
-    public static Dimension getElementSize(WebDriver driver, By locator) {
+    public static void UrlCheck(WebDriver driver,String expectedUrl) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return element.getSize();
+        wait.until(ExpectedConditions.urlToBe(expectedUrl));
+
+        Assert.assertEquals(expectedUrl, driver.getCurrentUrl());
     }
 
 
@@ -76,7 +77,23 @@ public class HomePage {
 
         Assert.assertTrue(PhonCat.isEnabled() && PhonCat.isDisplayed());
         PhonCat.click();
+    }
 
+    public static void clickLaptopCategory(WebDriver driver)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement LapCat = wait.until(ExpectedConditions.visibilityOfElementLocated(LaptopCat));
+
+        Assert.assertTrue(LapCat.isEnabled() && LapCat.isDisplayed());
+        LapCat.click();
+    }
+    public static void clickMonitorCategory(WebDriver driver)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement MonCat = wait.until(ExpectedConditions.visibilityOfElementLocated(MonitorCat));
+
+        Assert.assertTrue(MonCat.isEnabled() && MonCat.isDisplayed());
+        MonCat.click();
     }
 
 
