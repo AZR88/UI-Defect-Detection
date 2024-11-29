@@ -48,7 +48,7 @@ public class HomePage {
 
     @Given("user is on homepage")
     public void userIsOnHomepage() {
-        driver.get("https://www.demoblaze.com/");
+        page.HomePage.UrlCheck(driver,"https://www.demoblaze.com/");
     }
 
 
