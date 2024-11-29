@@ -24,3 +24,5 @@ Feature: Validate multiple product titles by ID
       | 14  | ASUS Full HD        | $230    |
       | 15  | MacBook Pro         | $1100   |
 
+
+    Scenario: Validate multiple product titles in phone category
