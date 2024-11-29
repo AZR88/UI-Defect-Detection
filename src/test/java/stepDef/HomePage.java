@@ -93,4 +93,9 @@ public class HomePage {
     public void userClikCategoryLaptopButton() {
         page.HomePage.clickLaptopCategory(driver);
     }
+
+    @When("user clik Category Monitor button")
+    public void userClikCategoryMonitorButton() {
+        page.HomePage.clickMonitorCategory(driver);
+    }
 }
