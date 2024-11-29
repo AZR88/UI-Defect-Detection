@@ -1,6 +1,7 @@
 package page;
 
 import io.cucumber.messages.types.Product;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,12 +10,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
-import static org.junit.Assert.assertTrue;
+
 
 public class HomePage {
 
-    private static By productImage = By.cssSelector("img.card-img-top.img-fluid");
     private static By nextbutton = By.id("next2");
+    private  static By PhoneCat = By.xpath("//a[@onclick=\"byCat('phone')\"]");
+
 
     public static By getProductTitleLocatorById(String productId, String expectedTitle) {
         return By.xpath("//a[contains(@href, 'prod.html?idp_=" + productId + "') and contains(text(), '" + expectedTitle + "')]");
@@ -63,12 +65,20 @@ public class HomePage {
         WebElement productTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(productTitleLocator));
 
 
-        assertTrue("Expected product title did not match", productTitleElement.getText().equals(nextProductTitle));
+        Assert.assertEquals("Expected product title did not match", productTitleElement.getText(), nextProductTitle);
+    }
+
+
+    public static void clickPhoneCategory(WebDriver driver)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement PhonCat = wait.until(ExpectedConditions.visibilityOfElementLocated(PhoneCat));
+
+        Assert.assertTrue(PhonCat.isEnabled() && PhonCat.isDisplayed());
+        PhonCat.click();
+
     }
 
 
 
-    public static Dimension getProductImageSize(WebDriver driver) {
-        return getElementSize(driver, productImage);
-    }
 }

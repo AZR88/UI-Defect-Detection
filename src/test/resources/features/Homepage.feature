@@ -1,6 +1,6 @@
 Feature: Validate multiple product titles by ID
 
-  Scenario: Validate multiple product titles
+  Scenario: Validate multiple product titles in all category
     Given user is on homepage
     When check multiple titles and ids
       | id  | title               | price    |
