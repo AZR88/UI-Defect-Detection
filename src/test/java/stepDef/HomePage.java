@@ -83,4 +83,14 @@ public class HomePage {
             assertTrue("Title atau Price tidak sesuai untuk produk dengan ID " + productId, isTitleAndPriceCorrect);
         }
     }
+
+    @When("user clik Category phone button")
+    public void userClikCategoryPhoneButton() {
+        page.HomePage.clickPhoneCategory(driver);
+    }
+
+    @When("user clik Category laptop button")
+    public void userClikCategoryLaptopButton() {
+        page.HomePage.clickLaptopCategory(driver);
+    }
 }
