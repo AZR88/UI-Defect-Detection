@@ -78,8 +78,9 @@ UI-Defect-Detection
     |       ├── page
     │       │   └── HomePage.java
     │       └── stepDef
-    │           ├── HomePage.java
-    │           └── Hooks.java
+    │       |    ├── HomePage.java
+    │       |    └── Hooks.java
+    |       └── CucumberTest.java   
     └── resources
         └── features
             └── homepage.feature
