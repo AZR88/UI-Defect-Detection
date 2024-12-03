@@ -19,7 +19,7 @@ dependencies {
     testImplementation 'io.rest-assured:json-path:5.3.0'
     testImplementation 'io.rest-assured:json-schema-validator:5.3.0'
     testImplementation 'org.assertj:assertj-core:3.24.0'
-
+    implementation 'io.github.bonigarcia:webdrivermanager:5.5.3'
     implementation 'org.seleniumhq.selenium:selenium-java:4.17.0'
 }
 
@@ -34,7 +34,7 @@ configurations {
     }
 }
 
-def tags = (findProperty('tags') == null) ? 'not @exclude' : "${findProperty('tags')} and not @exclude"
+def tags = (findProperty('tags') ?: 'not @exclude')
 
 task cucumberChrome(type: JavaExec) {
     group = "verification"
@@ -47,7 +47,7 @@ task cucumberChrome(type: JavaExec) {
             '--plugin', 'json:target/cucumber-report-chrome.json',
             '--plugin', 'html:target/cucumber-report-chrome.html',
             '--glue', 'stepDef',
-            '--tags', "${tags}",
+            '--tags', tags,
             'src/test/resources/features'
     ]
 
@@ -67,13 +67,12 @@ task cucumberFirefox(type: JavaExec) {
             '--plugin', 'json:target/cucumber-report-firefox.json',
             '--plugin', 'html:target/cucumber-report-firefox.html',
             '--glue', 'stepDef',
-            '--tags', "${tags}",
+            '--tags', tags,
             'src/test/resources/features'
     ]
 
     doFirst {
         systemProperty 'browser', 'firefox'
-        systemProperty 'webdriver.gecko.driver', 'src/test/driver/geckodriver.exe'
     }
 }
 
@@ -88,7 +87,7 @@ task cucumberEdge(type: JavaExec) {
             '--plugin', 'json:target/cucumber-report-edge.json',
             '--plugin', 'html:target/cucumber-report-edge.html',
             '--glue', 'stepDef',
-            '--tags', "${tags}",
+            '--tags', tags,
             'src/test/resources/features'
     ]
 
@@ -97,6 +96,9 @@ task cucumberEdge(type: JavaExec) {
     }
 }
 
+
 task runAllBrowsers {
+    group = "verification"
+    description = "Run Cucumber tests on all browsers"
     dependsOn cucumberChrome, cucumberFirefox, cucumberEdge
 }

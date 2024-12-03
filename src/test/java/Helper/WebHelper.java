@@ -1,5 +1,6 @@
 package Helper;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,54 +16,64 @@ public class WebHelper {
     public static WebDriver driver;
 
     public static void startDriver(String browser) {
-        switch (browser.toLowerCase()) {
-            case "chrome":
-                ChromeOptions chromeOptions = new ChromeOptions();
-                // Headless mode for Chrome
-                // chromeOptions.addArguments("--headless");
-                chromeOptions.addArguments("--no-sandbox");
-                chromeOptions.addArguments("--disable-dev-shm-usage");
-                chromeOptions.addArguments("--remote-allow-origins=*");
-                chromeOptions.addArguments("--window-size=1920,1080");
-                chromeOptions.addArguments("--start-maximized");
-                chromeOptions.addArguments("--disable-infobars");
-                chromeOptions.addArguments("--disable-extensions");
-                driver = new ChromeDriver(chromeOptions);
-                break;
+        try {
+            switch (browser.toLowerCase()) {
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                    chromeOptions.addArguments("--start-maximized");
+                    chromeOptions.addArguments("--disable-infobars");
+                    chromeOptions.addArguments("--disable-extensions");
+                    chromeOptions.setExperimentalOption("useAutomationExtension", false); // Untuk mencegah deteksi otomatis
+                    driver = new ChromeDriver(chromeOptions);
+                    break;
 
-            case "firefox":
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                // Headless mode for Firefox
-                // firefoxOptions.addArguments("--headless");
-                firefoxOptions.addArguments("--no-sandbox");
-                firefoxOptions.addArguments("--disable-dev-shm-usage");
-                firefoxOptions.addArguments("--remote-allow-origins=*");
-                firefoxOptions.addArguments("--window-size=1920,1080");
-                driver = new FirefoxDriver(firefoxOptions);
-                break;
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    firefoxOptions.addArguments("--no-sandbox");
+                    firefoxOptions.addArguments("--disable-dev-shm-usage");
+                    firefoxOptions.addArguments("--disable-gpu"); // Tambahan untuk stabilitas
+                    firefoxOptions.addArguments("--window-size=1920,1080");
+                    // firefoxOptions.addArguments("--headless"); // Uncomment jika mode headless diperlukan
+                    driver = new FirefoxDriver(firefoxOptions);
+                    break;
 
-            case "edge":
-                EdgeOptions edgeOptions = new EdgeOptions();
-                // Headless mode for Edge
-                // edgeOptions.addArguments("--headless");
-                edgeOptions.addArguments("--no-sandbox");
-                edgeOptions.addArguments("--disable-dev-shm-usage");
-                edgeOptions.addArguments("--remote-allow-origins=*");
-                edgeOptions.addArguments("--window-size=1920,1080");
-                driver = new EdgeDriver(edgeOptions);
-                break;
+                case "edge":
+                    WebDriverManager.edgedriver().setup();
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    edgeOptions.addArguments("--no-sandbox");
+                    edgeOptions.addArguments("--disable-dev-shm-usage");
+                    edgeOptions.addArguments("--remote-allow-origins=*");
+                    edgeOptions.addArguments("--window-size=1920,1080");
+                    driver = new EdgeDriver(edgeOptions);
+                    break;
 
-            default:
-                throw new IllegalArgumentException("Unsupported browser: " + browser);
+                default:
+                    throw new IllegalArgumentException("Unsupported browser: " + browser);
+            }
+
+            if (driver == null) {
+                throw new IllegalStateException("WebDriver initialization failed for browser: " + browser);
+            }
+
+            // Set konfigurasi umum untuk WebDriver
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            driver.get("https://www.demoblaze.com/");
+        } catch (Exception e) {
+            throw new RuntimeException("Error initializing WebDriver for browser: " + browser, e);
         }
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.get("https://www.demoblaze.com/");
     }
+
 
     public static void tearDown() {
         if (driver != null) {
             driver.quit();
+            driver = null;
         }
     }
 }
