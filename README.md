@@ -98,7 +98,7 @@ License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 Acknowledgements
-Selenium WebDriver: For browser automation.
-JUnit: For running and structuring the tests.
-WebDriverManager: For automatically managing WebDriver binaries.
+- Selenium WebDriver: For browser automation.
+- JUnit: For running and structuring the tests.
+- WebDriverManager: For automatically managing WebDriver binaries.
 
