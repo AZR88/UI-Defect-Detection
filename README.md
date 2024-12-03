@@ -114,4 +114,3 @@ WebDriverManager: For automatically managing WebDriver binaries.
 8. **License**: Menyediakan informasi lisensi (misalnya MIT).
 9. **Acknowledgements**: Memberikan penghargaan kepada alat dan pustaka yang digunakan dalam proyek ini.
 ```
-Anda bisa menyesuaikan bagian tertentu sesuai dengan detail proyek Anda, seperti nama repositori, URL, dan instruksi spesifik lainnya.
