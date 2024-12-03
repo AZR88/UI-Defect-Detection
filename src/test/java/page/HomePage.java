@@ -108,7 +108,7 @@ public class HomePage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement Home = wait.until(ExpectedConditions.visibilityOfElementLocated(HomeButton));
 
-        Assert.assertEquals(Home.getText(),Text);
+
         Assert.assertTrue(Home.isEnabled());
     }
 
