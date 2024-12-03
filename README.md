@@ -101,16 +101,4 @@ Acknowledgements
 Selenium WebDriver: For browser automation.
 JUnit: For running and structuring the tests.
 WebDriverManager: For automatically managing WebDriver binaries.
-```markdown
 
-### Penjelasan:
-1. **Project Description**: Bagian pertama memberikan gambaran umum tentang apa yang dilakukan oleh proyek ini, seperti pengujian otomatis UI menggunakan Selenium WebDriver.
-2. **Prerequisites**: Menyebutkan semua persyaratan yang diperlukan untuk menjalankan proyek ini.
-3. **Installation**: Menyediakan langkah-langkah instalasi untuk mengkloning repositori dan mengatur dependensi.
-4. **Running Tests**: Cara menjalankan pengujian menggunakan Maven atau Gradle.
-5. **Test Reporting**: Memberikan informasi tentang di mana hasil pengujian dapat ditemukan.
-6. **Folder Structure**: Menjelaskan struktur folder dari proyek ini.
-7. **Contributing**: Memberikan panduan bagaimana orang lain dapat berkontribusi pada proyek ini.
-8. **License**: Menyediakan informasi lisensi (misalnya MIT).
-9. **Acknowledgements**: Memberikan penghargaan kepada alat dan pustaka yang digunakan dalam proyek ini.
-```
