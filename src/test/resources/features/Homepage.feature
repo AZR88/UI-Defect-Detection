@@ -4,9 +4,10 @@ Feature: Validate HomepageText
     Given  user is on homepage
     When check Navbar "Home" button
     Then Check "About us" button
-    Then Check "Cart" button
-    Then Check "Log in" button
-    Then Check "Sign up" button
+    Then Chek "Contact" button
+    Then Check the "Cart" button
+    Then Check a "Log in" button
+    Then check "Sign up" buton
 
   Scenario: Validate multiple product titles in all category
     Given user is on homepage
