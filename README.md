@@ -71,24 +71,19 @@ Folder Structure
 UI-Defect-Detection
 │
 ├── src
-│   ├── main
-│   │   ├── java
-│   │   │   ├── page
-│   │   │   │   └── HomePage.java
-│   │   │   └── utils
-│   │   │       └── WebDriverManager.java
-│   │   └── resources
-│   ├── test
-│   │   └── java
-│   │       └── tests
-│   │           ├── HomePageTest.java
-│   │           └── ProductTest.java
-│   └── resources
-│       └── test-data
-│           └── products.csv
-│
-├── pom.xml (Maven) or build.gradle (Gradle)
-└── README.md
+    ├── test
+    │   └── java
+    |       ├── Helper
+    |       |   └── WebHelper.java
+    |       ├── page
+    │       │   └── HomePage.java
+    │       └── stepDef
+    │       |    ├── HomePage.java
+    │       |    └── Hooks.java
+    |       └── CucumberTest.java   
+    └── resources
+        └── features
+            └── homepage.feature
 ```
 Contributing
 Fork the repository.
