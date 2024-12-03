@@ -1,4 +1,12 @@
-Feature: Validate multiple product titles by ID
+Feature: Validate HomepageText
+
+  Scenario: Validate navbar Text
+    Given  user is on homepage
+    When check Navbar "Home" button
+    Then Check "About us" button
+    Then Check "Cart" button
+    Then Check "Log in" button
+    Then Check "Sign up" button
 
   Scenario: Validate multiple product titles in all category
     Given user is on homepage
@@ -25,7 +33,7 @@ Feature: Validate multiple product titles by ID
       | 15  | MacBook Pro         | $1100   |
 
 
-    Scenario: Validate multiple product titles in phone category
+  Scenario: Validate multiple product titles in phone category
       Given user is on homepage
       When user clik Category phone button
       Then check multiple titles and ids
@@ -57,5 +65,6 @@ Feature: Validate multiple product titles by ID
       | id  | title               | price     |
       | 10  | Apple monitor 24    | $400      |
       | 14  | ASUS Full HD        | $230      |
+
 
 
