@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static Helper.WebHelper.driver;
 import static org.junit.Assert.assertTrue;
+import static page.HomePage.CheckHomebutton;
 import static page.HomePage.getProductTitleLocatorById;
 
 public class HomePage {
@@ -97,5 +98,10 @@ public class HomePage {
     @When("user clik Category Monitor button")
     public void userClikCategoryMonitorButton() {
         page.HomePage.clickMonitorCategory(driver);
+    }
+
+    @When("check Navbar {string} button")
+    public void checkNavbarButton(String arg0) {
+        CheckHomebutton(driver,arg0);
     }
 }
