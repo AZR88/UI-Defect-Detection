@@ -1,5 +1,6 @@
 package page;
 
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -147,13 +148,13 @@ public class HomePage {
         Assert.assertTrue(Log.isEnabled());
     }
 
-    public static void CheckSignbutton(WebDriver driver, String Text){
+    public static void Checkcontactbutton(WebDriver driver, String Text){
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement Sign = wait.until(ExpectedConditions.visibilityOfElementLocated(SignUpButton));
+        WebElement Cont = wait.until(ExpectedConditions.visibilityOfElementLocated(ContactButton));
 
-        Assert.assertEquals(Sign.getText(),Text);
-        Assert.assertTrue(Sign.isEnabled());
+        Assert.assertEquals(Cont.getText(),Text);
+        Assert.assertTrue(Cont.isEnabled());
     }
 
 
