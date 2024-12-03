@@ -4,7 +4,7 @@ UI-Defect-Detection is a test automation project designed to identify UI defects
 
 ## Features
 
-- **Automated UI Testing**: Validates the visual and functional integrity of web elements (e.g., buttons, images, product titles, and prices).
+- **Automated UI Testing**: Validates the visual and functional integrity of web elements.
 - **Page Object Model (POM)**: Follows the Page Object Model design pattern for better maintainability and scalability of tests.
 - **Data-Driven Testing**: Supports running tests with different sets of data, such as product IDs and titles.
 - **Cross-Browser Support**: Can be configured to run tests on different browsers like Chrome and Firefox using WebDriver.
@@ -42,21 +42,24 @@ Download WebDriver binaries:
 
 Download ChromeDriver or GeckoDriver and add them to your system PATH, or use WebDriverManager to manage it automatically.
 Running Tests
-To run tests with Maven:
 
-```bash
-mvn test
-```
 To run tests with Gradle:
 ```bash
 ./gradlew test
 ```
-To run specific tests (e.g., LoginTest):
-
+To run on multiple browser :
 ```bash
-mvn -Dtest=LoginTest test
+./gradlew runAllBrowsers
 ```
-Or with Gradle:
+To run on selected browser :
+```bash
+./gradlew cucumberFirefox
+./gradlew cucumberChrome
+./gradlew cucumberEdge
+```
+
+To run specific tests (e.g., LoginTest):
+with Gradle:
 
 ```bash
 ./gradlew test --tests "LoginTest"
