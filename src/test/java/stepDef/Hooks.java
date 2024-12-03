@@ -1,35 +1,22 @@
 package stepDef;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
 
 import static Helper.WebHelper.startDriver;
 import static Helper.WebHelper.tearDown;
 
-
 public class Hooks {
 
-    @BeforeAll
-    public static void startUp (){
-
-    }
-
-    @AfterAll
-    public static void shutDown (){
-
-    }
-
     @Before
-    public void beforeTest (){
-        System.out.println("BEFORE TEST");
-        startDriver();
+    public void beforeTest() {
+        String browser = System.getProperty("browser", "chrome"); // Default to chrome if no property is set
+        System.out.println("Running tests on: " + browser);
+        startDriver(browser);
     }
 
     @After
-    public  void afterTest (){
-        System.out.println("AFTER TEST");
+    public void afterTest() {
         tearDown();
     }
 }
