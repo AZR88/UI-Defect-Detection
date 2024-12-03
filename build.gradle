@@ -1,79 +1,102 @@
-package Helper;
+plugins {
+    id 'java'
+}
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+repositories {
+    mavenCentral()
+}
 
-import java.time.Duration;
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
 
-public class WebHelper {
+    implementation 'io.cucumber:cucumber-java:7.12.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.12.0'
 
-    public static WebDriver driver;
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+    testImplementation 'org.json:json:20220924'
+    testImplementation 'io.rest-assured:json-path:5.3.0'
+    testImplementation 'io.rest-assured:json-schema-validator:5.3.0'
+    testImplementation 'org.assertj:assertj-core:3.24.0'
 
-    public static void startDriver(String browser) {
-        try {
-            switch (browser.toLowerCase()) {
-                case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--no-sandbox");
-                    chromeOptions.addArguments("--disable-dev-shm-usage");
-                    chromeOptions.addArguments("--remote-allow-origins=*");
-                    chromeOptions.addArguments("--window-size=1920,1080");
-                    chromeOptions.addArguments("--start-maximized");
-                    chromeOptions.addArguments("--disable-infobars");
-                    chromeOptions.addArguments("--disable-extensions");
-                    chromeOptions.setExperimentalOption("useAutomationExtension", false); // Untuk mencegah deteksi otomatis
-                    driver = new ChromeDriver(chromeOptions);
-                    break;
+    implementation 'org.seleniumhq.selenium:selenium-java:4.17.0'
+}
 
-                case "firefox":
-                    WebDriverManager.firefoxdriver().setup();
-                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    firefoxOptions.addArguments("--no-sandbox");
-                    firefoxOptions.addArguments("--disable-dev-shm-usage");
-                    firefoxOptions.addArguments("--disable-gpu"); // Tambahan untuk stabilitas
-                    firefoxOptions.addArguments("--window-size=1920,1080");
-                    // firefoxOptions.addArguments("--headless"); // Uncomment jika mode headless diperlukan
-                    driver = new FirefoxDriver(firefoxOptions);
-                    break;
+test {
+    useJUnitPlatform()
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
 
-                case "edge":
-                    WebDriverManager.edgedriver().setup();
-                    EdgeOptions edgeOptions = new EdgeOptions();
-                    edgeOptions.addArguments("--no-sandbox");
-                    edgeOptions.addArguments("--disable-dev-shm-usage");
-                    edgeOptions.addArguments("--remote-allow-origins=*");
-                    edgeOptions.addArguments("--window-size=1920,1080");
-                    driver = new EdgeDriver(edgeOptions);
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Unsupported browser: " + browser);
-            }
-
-            if (driver == null) {
-                throw new IllegalStateException("WebDriver initialization failed for browser: " + browser);
-            }
-
-            // Set konfigurasi umum untuk WebDriver
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-            driver.get("https://www.demoblaze.com/");
-        } catch (Exception e) {
-            throw new RuntimeException("Error initializing WebDriver for browser: " + browser, e);
-        }
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
     }
+}
 
+def tags = (findProperty('tags') == null) ? 'not @exclude' : "${findProperty('tags')} and not @exclude"
 
-    public static void tearDown() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
+task cucumberChrome(type: JavaExec) {
+    group = "verification"
+    description = "Run Cucumber tests on Chrome"
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "io.cucumber.core.cli.Main"
+
+    args = [
+            '--plugin', 'pretty',
+            '--plugin', 'json:target/cucumber-report-chrome.json',
+            '--plugin', 'html:target/cucumber-report-chrome.html',
+            '--glue', 'stepDef',
+            '--tags', "${tags}",
+            'src/test/resources/features'
+    ]
+
+    doFirst {
+        systemProperty 'browser', 'chrome'
     }
+}
+
+task cucumberFirefox(type: JavaExec) {
+    group = "verification"
+    description = "Run Cucumber tests on Firefox"
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "io.cucumber.core.cli.Main"
+
+    args = [
+            '--plugin', 'pretty',
+            '--plugin', 'json:target/cucumber-report-firefox.json',
+            '--plugin', 'html:target/cucumber-report-firefox.html',
+            '--glue', 'stepDef',
+            '--tags', "${tags}",
+            'src/test/resources/features'
+    ]
+
+    doFirst {
+        systemProperty 'browser', 'firefox'
+        systemProperty 'webdriver.gecko.driver', 'src/test/driver/geckodriver.exe'
+    }
+}
+
+task cucumberEdge(type: JavaExec) {
+    group = "verification"
+    description = "Run Cucumber tests on Edge"
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "io.cucumber.core.cli.Main"
+
+    args = [
+            '--plugin', 'pretty',
+            '--plugin', 'json:target/cucumber-report-edge.json',
+            '--plugin', 'html:target/cucumber-report-edge.html',
+            '--glue', 'stepDef',
+            '--tags', "${tags}",
+            'src/test/resources/features'
+    ]
+
+    doFirst {
+        systemProperty 'browser', 'edge'
+    }
+}
+
+task runAllBrowsers {
+    dependsOn cucumberChrome, cucumberFirefox, cucumberEdge
 }
