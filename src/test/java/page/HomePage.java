@@ -12,10 +12,21 @@ import java.time.Duration;
 
 public class HomePage {
 
-    private static By nextbutton = By.id("next2");
+    //Navbar
+    private static By HomeButton = By.xpath("//li[@class='nav-item active']//a[@class='nav-link']");
+    private static By ContactButton = By.xpath("//a[normalize-space()='Contact']");
+    private static By AboutUsButton = By.xpath("//a[normalize-space()='About us']");
+    private static By CartButton = By.xpath("(//a[normalize-space()='Cart'])");
+    private static By LoginButton = By.id("login2");
+    private static By SignUpButton = By.id("signin2");
+
+
+    private  static By nextbutton = By.id("next2");
     private  static By PhoneCat = By.xpath("//a[@onclick=\"byCat('phone')\"]");
     private  static By LaptopCat = By.xpath("//a[@onclick=\"byCat('notebook')\"]");
     private  static By MonitorCat = By.xpath("//a[@onclick=\"byCat('monitor')\"]");
+
+
 
 
     public static By getProductTitleLocatorById(String productId, String expectedTitle) {
@@ -54,13 +65,8 @@ public class HomePage {
     public static void ClickNext(WebDriver driver, String nextProductID, String nextProductTitle) throws InterruptedException {
 
         driver.findElement(nextbutton).click();
-
-
         Thread.sleep(5000);
-
-
         By productTitleLocator = getProductTitleLocatorById(nextProductID, nextProductTitle);
-
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement productTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(productTitleLocator));
@@ -95,6 +101,61 @@ public class HomePage {
         Assert.assertTrue(MonCat.isEnabled() && MonCat.isDisplayed());
         MonCat.click();
     }
+
+    public static void CheckHomebutton(WebDriver driver, String Text){
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement Home = wait.until(ExpectedConditions.visibilityOfElementLocated(HomeButton));
+
+        Assert.assertEquals(Home.getText(),Text);
+        Assert.assertTrue(Home.isEnabled());
+    }
+
+    public static void CheckSignupbutton(WebDriver driver, String Text){
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement Sign = wait.until(ExpectedConditions.visibilityOfElementLocated(SignUpButton));
+
+        Assert.assertEquals(Sign.getText(),Text);
+        Assert.assertTrue(Sign.isEnabled());
+    }
+
+    public static void CheckAboutbutton(WebDriver driver, String Text){
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement About = wait.until(ExpectedConditions.visibilityOfElementLocated(AboutUsButton));
+
+        Assert.assertEquals(About.getText(),Text);
+        Assert.assertTrue(About.isEnabled());
+    }
+
+    public static void CheckCartbutton(WebDriver driver, String Text){
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement Cart = wait.until(ExpectedConditions.visibilityOfElementLocated(CartButton));
+
+        Assert.assertEquals(Cart.getText(),Text);
+        Assert.assertTrue(Cart.isEnabled());
+    }
+
+    public static void CheckLoginbutton(WebDriver driver, String Text){
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement Log = wait.until(ExpectedConditions.visibilityOfElementLocated(LoginButton));
+
+        Assert.assertEquals(Log.getText(),Text);
+        Assert.assertTrue(Log.isEnabled());
+    }
+
+    public static void CheckSignbutton(WebDriver driver, String Text){
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement Sign = wait.until(ExpectedConditions.visibilityOfElementLocated(SignUpButton));
+
+        Assert.assertEquals(Sign.getText(),Text);
+        Assert.assertTrue(Sign.isEnabled());
+    }
+
 
 
 
